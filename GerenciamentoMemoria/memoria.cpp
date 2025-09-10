@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <cmath>
+#include <map>
 
 namespace gerenMemoria {
 
@@ -39,12 +40,12 @@ namespace gerenMemoria {
     }
 
     void desenharFramesVazios(std::vector<std::string>& frames){
-       for(auto& frame : frames){
+        for(auto& frame : frames){
             frame = "[ ]";
         }
     }
 
-    processo inserirProcesso(int &contador, int tamanhoDaPagina){
+    void inserirProcesso(int &contador, int tamanhoDaPagina, std::vector<processo>& processos){
         std::string tamanhoDoProcesso;
         std::cout <<"Você está prestes a inserir um processo!" << std::endl;    
 
@@ -64,8 +65,64 @@ namespace gerenMemoria {
 
         contador++;
 
-        return atual;
+        processos.push_back(atual);
     }
+
+    void alocarProcesso(std::vector<std::string>& frames, int id, std::vector<processo>& processos){
+        int contador = processos.back().nPaginas;    
+        for(auto& frame : frames){
+                if(frame == "[ ]"){
+                    frame = "[";
+                    frame += std::to_string(id);
+                    frame += "]";
+                    contador--;
+                    if(contador == 0) break;
+                }
+            }
+    }
+
+    void removerProcesso(std::vector<std::string>& frames, int id, std::vector<processo>& processos){
+        std::string alvo = "[";
+        alvo += std::to_string(id);
+        alvo += "]";
+        for(auto & frame : frames){
+            if(frame == alvo){
+                frame = "[ ]";
+            }
+        }
+    }
+
+    void exibirTabelaPaginas(std::vector<std::string> const & frames, int id, std::vector<processo>& processos){
+        int ID = processos.back().id;
+        std::string alvo = "[";
+        alvo += std::to_string(ID);
+        alvo += "]";
+        int contador = 0;
+        for(size_t i = 0; i < frames.size(); i++){
+            if(frames[i] == alvo){
+                processos.back().tabelaDePaginas[contador] = i;
+                contador++;
+            }
+        }
+        std::cout << "Página    " << "Frame" << std::endl;
+        for(auto &[chave, valor] : processos.back().tabelaDePaginas){
+            std::cout <<  chave << "            " << valor << std::endl;
+        }
+    }
+
+    void desenharFrames(std::vector<std::string>const & frames){
+        int contador = 0;
+        for(auto & frame: frames){
+            std::cout << frame << " ";
+            contador ++;
+            if(contador >= 10){
+                contador = 0;
+                std::cout << std::endl;
+            }
+        }
+    }
+
+
 }   
 
 
@@ -74,9 +131,26 @@ int main(){
     const int NFRAMES = gerenMemoria::pedirNumeroFrames();
     const int TPAGINA = gerenMemoria::pedirTamanhoPagina();
     std::vector<std::string> frames(NFRAMES);
+    std::vector<gerenMemoria::processo> processos;
     gerenMemoria::desenharFramesVazios(frames);
 
-    gerenMemoria::processo processoLocal = gerenMemoria::inserirProcesso(idPaginaAtual,TPAGINA);
-    std::cout << "id " << processoLocal.id << " n de páginas " << processoLocal.nPaginas << " tamanho total" << processoLocal.tamanhoTotal << " fragmentação" << processoLocal.fragmentacao;
+    gerenMemoria::inserirProcesso(idPaginaAtual,TPAGINA, processos);
+    gerenMemoria:: alocarProcesso(frames,processos.back().id,processos);
+    gerenMemoria:: exibirTabelaPaginas(frames,processos.back().id,processos);
+    gerenMemoria::inserirProcesso(idPaginaAtual,TPAGINA, processos);
+    gerenMemoria:: alocarProcesso(frames,processos.back().id,processos);
+    gerenMemoria:: exibirTabelaPaginas(frames,processos.back().id,processos);
+    gerenMemoria::inserirProcesso(idPaginaAtual,TPAGINA, processos);
+    gerenMemoria:: alocarProcesso(frames,processos.back().id,processos);
+    gerenMemoria:: exibirTabelaPaginas(frames,processos.back().id,processos);
+
+    gerenMemoria:: desenharFrames(frames);
+    gerenMemoria:: removerProcesso(frames,processos[processos.size() - 2].id,processos);
+    std::cout << std::endl;
+    gerenMemoria:: desenharFrames(frames);
+    gerenMemoria::inserirProcesso(idPaginaAtual,TPAGINA, processos);
+    gerenMemoria:: alocarProcesso(frames, processos.back().id,processos);
+    gerenMemoria:: exibirTabelaPaginas(frames,processos.back().id,processos);
+    gerenMemoria:: desenharFrames(frames);
 
 }

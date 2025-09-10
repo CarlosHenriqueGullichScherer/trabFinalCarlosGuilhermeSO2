@@ -10,7 +10,6 @@ namespace gerenMemoria{
 
 struct processo{
     int nPaginas;
-    int framesNecessarios;
     int id;
     int fragmentacao;
     double tamanhoTotal;
@@ -21,21 +20,11 @@ bool ehValido(const std::string &s);
 int pedirTamanhoPagina();
 int pedirNumeroFrames();
 void desenharFramesVazios(std::vector<std::string>& frames);
-processo inserirProcesso(int &contador, int tamanhoDaPagina);
-
-void resetar();
-void sair();
-void modoDeOperação();
-void calcularFragmentação();
-void espacoLivre();
-void fragmentosDisponiveis();
-void fragmentacaoInterna();
-void fragmentacaoExterna();
-void taxaSucessoAlocacao();
-void framesLivres();
-void usoMemoria();
-void menuInterativo();
-
+void inserirProcesso(int &contador, int tamanhoDaPagina, std::vector<processo>& processos);
+void alocarProcesso(std::vector<std::string>& frames, int id, std::vector<processo>& processos);
+void removerProcesso(std::vector<std::string>& frames, int id, std::vector<processo>& processos);
+void desenharFrames(std::vector<std::string>const & frames);
+void exibirTabelaPaginas(std::vector<std::string> const & frames, int id, std::vector<processo>& processos);
 }
 
 #endif 
