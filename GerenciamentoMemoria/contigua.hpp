@@ -15,6 +15,10 @@ namespace contigua{
     void inicMemoria(int n);
     void mostraMemoria();
     void mostraTabela();
+    void processo_FirstFit(int id, int tamanho);
+    void removerProcessoContigua(int id);
+    void realocarMemoria();
+    
 }
 
 #endif 
