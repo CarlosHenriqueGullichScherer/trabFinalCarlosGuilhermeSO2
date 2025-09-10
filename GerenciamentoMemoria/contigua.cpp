@@ -132,6 +132,7 @@ int main(){ //main provisoria para testes
     realocarMemoria();
     mostrarMemoria();
     mostrarTabela();
+    
     return 0;
 }
 
