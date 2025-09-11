@@ -61,8 +61,12 @@ namespace gerenMemoria {
         atual.id = contador;
         atual.nPaginas = std::ceil((double)std::stoi(tamanhoDoProcesso) / tamanhoDaPagina);
         atual.tamanhoTotal = std::stoi(tamanhoDoProcesso);
-        atual.fragmentacao = std::stoi(tamanhoDoProcesso) % tamanhoDaPagina;
-
+        int ultimaPag = std::stoi(tamanhoDoProcesso) % tamanhoDaPagina;
+        if(ultimaPag){
+            atual.fragmentacao = tamanhoDaPagina - ultimaPag;
+        }else{
+            atual.fragmentacao = 0;
+        }
         contador++;
 
         processos.push_back(atual);
@@ -110,10 +114,10 @@ namespace gerenMemoria {
         }
     }
 
-    void desenharFrames(std::vector<std::string>const & frames){
+    void desenharFrames(std::vector<std::string>const & frames, std::vector<processo> & processos){
         int contador = 0;
-        for(auto & frame: frames){
-            std::cout << frame << " ";
+        for(size_t i = 0; i < frames.size(); i++){
+            std::cout << frames[i] << " ";
             contador ++;
             if(contador >= 10){
                 contador = 0;
@@ -122,35 +126,39 @@ namespace gerenMemoria {
         }
     }
 
+    double calcularFragmentacao(std::vector<processo>const & processos, int nframes, int tpagina){
+        double fragmentacao = 0;
+        for(auto p : processos)
+            fragmentacao += p.fragmentacao;
+
+            return  (fragmentacao / (double)(nframes * tpagina)) * 100;  
+
+    }
+
+    void menuPaginacao(){
+        
+        std::cout << "Você está no menu da paginação, para começar uma simulação, você deve inserir a quantidade de frames da memória e tamanho da página" << std::endl;
+        int tPagina = pedirTamanhoPagina();
+        int nFrames = pedirNumeroFrames();
+        std::string entrada;
+        do{
+            std::cout << "Selecione uma das opções a baixo: " << std::endl;
+            std::cout << "1. Inserir Processo " << std::endl;
+            std::cout << "2. Remover Processo " << std::endl;
+            std::cout << "3. Exibir tabela de páginas " << std::endl;
+            std::cout << "4. Ver Memória " << std::endl;
+            std::cout << "5. Calcular Fragmentação " << std::endl;
+            std::cout << "6. Calcular Fragmentação de um processo específico " << std::endl;
+            std::cout << "7. Reinicar simulação" << std::endl;
+            std::cout << "8. Sair " <<std::endl;
+
+            std::getline(std::cin, entrada);
+       } while (ehValido(entrada) || std::stoi(entrada) < 1 || std::stoi(entrada) > 8);
+    }
 
 }   
 
 
 int main(){
-    int idPaginaAtual = 0;
-    const int NFRAMES = gerenMemoria::pedirNumeroFrames();
-    const int TPAGINA = gerenMemoria::pedirTamanhoPagina();
-    std::vector<std::string> frames(NFRAMES);
-    std::vector<gerenMemoria::processo> processos;
-    gerenMemoria::desenharFramesVazios(frames);
-
-    gerenMemoria::inserirProcesso(idPaginaAtual,TPAGINA, processos);
-    gerenMemoria:: alocarProcesso(frames,processos.back().id,processos);
-    gerenMemoria:: exibirTabelaPaginas(frames,processos.back().id,processos);
-    gerenMemoria::inserirProcesso(idPaginaAtual,TPAGINA, processos);
-    gerenMemoria:: alocarProcesso(frames,processos.back().id,processos);
-    gerenMemoria:: exibirTabelaPaginas(frames,processos.back().id,processos);
-    gerenMemoria::inserirProcesso(idPaginaAtual,TPAGINA, processos);
-    gerenMemoria:: alocarProcesso(frames,processos.back().id,processos);
-    gerenMemoria:: exibirTabelaPaginas(frames,processos.back().id,processos);
-
-    gerenMemoria:: desenharFrames(frames);
-    gerenMemoria:: removerProcesso(frames,processos[processos.size() - 2].id,processos);
-    std::cout << std::endl;
-    gerenMemoria:: desenharFrames(frames);
-    gerenMemoria::inserirProcesso(idPaginaAtual,TPAGINA, processos);
-    gerenMemoria:: alocarProcesso(frames, processos.back().id,processos);
-    gerenMemoria:: exibirTabelaPaginas(frames,processos.back().id,processos);
-    gerenMemoria:: desenharFrames(frames);
-
+   gerenMemoria::menuPaginacao();
 }

@@ -23,8 +23,10 @@ void desenharFramesVazios(std::vector<std::string>& frames);
 void inserirProcesso(int &contador, int tamanhoDaPagina, std::vector<processo>& processos);
 void alocarProcesso(std::vector<std::string>& frames, int id, std::vector<processo>& processos);
 void removerProcesso(std::vector<std::string>& frames, int id, std::vector<processo>& processos);
-void desenharFrames(std::vector<std::string>const & frames);
+void desenharFrames(std::vector<std::string>const & frames, std::vector<processo>const & processos);
 void exibirTabelaPaginas(std::vector<std::string> const & frames, int id, std::vector<processo>& processos);
+double calcularFragmentacao(std::vector<processo>const & processos);
+void menuPaginacao();
 }
 
 #endif 
