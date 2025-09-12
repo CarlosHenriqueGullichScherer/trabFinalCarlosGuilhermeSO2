@@ -135,30 +135,129 @@ namespace gerenMemoria {
 
     }
 
-    void menuPaginacao(){
+    double calcularFragmentacaoEspeci(processo processo, int tpagina, int id){
+        return processo.fragmentacao / processo.tamanhoTotal * 100;
+    }
+
+    int acharProcesso(std::vector<processo>&processos){
+        std::string id;
+        std::string ids;
+        std::string ids2;
+        bool entradaInvalida = true;
+        do{
+        std::cout << "Qual processo você quer selecionar(ID): " << std::endl;
+        for(auto& processo : processos){
+            ids += std::to_string(processo.id) + " ";
+            ids2 += std::to_string(processo.id);
+        }
+        std::cout << ids << std::endl;
+        std::getline(std::cin, id);
+        for(auto& processo : processos){
+            if(processo.id == std::stoi(id)){
+                entradaInvalida = false;
+                break;
+            }
+        }
+        }while (ehValido(id) || entradaInvalida);
         
-        std::cout << "Você está no menu da paginação, para começar uma simulação, você deve inserir a quantidade de frames da memória e tamanho da página" << std::endl;
+        for(processo* p = processos.data(); p < processos.data() + processos.size(); p++) {
+            if(p->id == std::stoi(id)){
+                return p->id;
+            }
+        return 0;
+        }
+    }
+
+    void menuPaginacao() {
+    bool sair = false;
+
+    while (!sair) {  
+        std::cout << "Você está no menu da paginação, para começar uma simulação, "
+                  << "você deve inserir a quantidade de frames da memória e tamanho da página" 
+                  << std::endl;
+
         int tPagina = pedirTamanhoPagina();
         int nFrames = pedirNumeroFrames();
-        std::string entrada;
-        do{
-            std::cout << "Selecione uma das opções a baixo: " << std::endl;
+
+        std::vector<std::string> frames(nFrames);
+        desenharFramesVazios(frames);
+        std::vector<processo> processos;
+        int contador = 0;
+
+        bool reiniciar = false;
+
+        while (!reiniciar && !sair) {
+            std::string entrada;
+            std::cout << "\nSelecione uma das opções abaixo: " << std::endl;
             std::cout << "1. Inserir Processo " << std::endl;
             std::cout << "2. Remover Processo " << std::endl;
             std::cout << "3. Exibir tabela de páginas " << std::endl;
             std::cout << "4. Ver Memória " << std::endl;
             std::cout << "5. Calcular Fragmentação " << std::endl;
             std::cout << "6. Calcular Fragmentação de um processo específico " << std::endl;
-            std::cout << "7. Reinicar simulação" << std::endl;
-            std::cout << "8. Sair " <<std::endl;
+            std::cout << "7. Reiniciar simulação" << std::endl;
+            std::cout << "8. Sair " << std::endl;
 
             std::getline(std::cin, entrada);
-       } while (ehValido(entrada) || std::stoi(entrada) < 1 || std::stoi(entrada) > 8);
-    }
 
-}   
+            if (ehValido(entrada)) continue;
+            int opcao = std::stoi(entrada);
+
+            switch (opcao) {
+                case 1: {
+                    inserirProcesso(contador, tPagina, processos);
+                    alocarProcesso(frames, processos.back().id, processos);
+                    break;
+                }
+                case 2:
+                    if (!processos.empty())
+                        removerProcesso(frames, acharProcesso(processos), processos);
+                    else 
+                        std::cout << "Não há nenhum processo" << std::endl;
+                    break;
+                case 3:
+                    if (!processos.empty())
+                        exibirTabelaPaginas(frames, acharProcesso(processos), processos);
+                    else
+                        std::cout << "Não há nenhum processo" << std::endl;
+                    break;
+                case 4:
+                    desenharFrames(frames, processos);
+                    break;
+                case 5: {
+                    if(!processos.empty()){
+                    double resultado = calcularFragmentacao(processos, nFrames, tPagina);
+                    std::cout << resultado << "%" << std::endl;
+                    }else
+                        std::cout << "Não há nenhum processo" << std::endl;
+                    break;
+                }
+                case 6:
+                    if (!processos.empty()){
+                        // std::cout << calcularFragmentacaoEspeci(acharProcesso(processos), tPagina, acharProcesso(processos)) << "%" << std::endl;
+                    }else
+                        std::cout << "Não há nenhum processo" << std::endl;
+                    break;
+                case 7:
+                    reiniciar = true; // volta para pedir tPagina e nFrames
+                    break;
+                case 8:
+                    sair = true; // sai do programa
+                    break;
+                default:
+                    std::cout << "Opção inválida!" << std::endl;
+                    break;
+            }
+        }
+    }
+}
+
+}
+
 
 
 int main(){
    gerenMemoria::menuPaginacao();
+
+   return 0;
 }

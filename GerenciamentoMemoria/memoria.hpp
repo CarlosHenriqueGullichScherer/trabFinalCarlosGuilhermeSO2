@@ -26,6 +26,8 @@ void removerProcesso(std::vector<std::string>& frames, int id, std::vector<proce
 void desenharFrames(std::vector<std::string>const & frames, std::vector<processo>const & processos);
 void exibirTabelaPaginas(std::vector<std::string> const & frames, int id, std::vector<processo>& processos);
 double calcularFragmentacao(std::vector<processo>const & processos);
+double calcularFragmentacaoEspeci(processo processo, int tpagina, int id);
+int acharProcesso(std::vector<processo>&processos);
 void menuPaginacao();
 }
 
