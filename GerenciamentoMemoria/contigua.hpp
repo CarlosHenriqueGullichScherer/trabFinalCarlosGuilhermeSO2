@@ -13,11 +13,15 @@ namespace contigua{
     };
 
     void inicMemoria(int n);
-    void mostraMemoria();
-    void mostraTabela();
-    void processo_FirstFit(int id, int tamanho);
+    void mostrarMemoria();
+    void mostrarTabela();
+    void processo_FirstFit(int tamanho);
+    void processo_BestFit(int tamanho);
+    void processo_WorstFit(int tamanho);
+    void processo_CircularFit(int tamanho);
     void removerProcessoContigua(int id);
     void realocarMemoria();
+    double calcularFragmentacao();
     
 }
 
