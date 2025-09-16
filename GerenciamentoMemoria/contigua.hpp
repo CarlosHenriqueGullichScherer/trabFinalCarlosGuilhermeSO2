@@ -1,11 +1,12 @@
 #ifndef CONTIGUA_HPP
 #define CONTIGUA_HPP
 
-#include <map> //guardar a tabela de processos
 
-namespace contigua{
+namespace contigua
+{
 
-    struct Processo{
+    struct Processo
+    {
         int id;
         int tamanho;
         int base;
@@ -22,7 +23,7 @@ namespace contigua{
     void removerProcessoContigua(int id);
     void realocarMemoria();
     double calcularFragmentacao();
-    
+
 }
 
-#endif 
+#endif
