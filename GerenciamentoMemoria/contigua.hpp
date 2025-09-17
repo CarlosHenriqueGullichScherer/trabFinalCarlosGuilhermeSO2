@@ -13,6 +13,7 @@ namespace contigua
         int limite;
     };
 
+    bool ehValido(const std::string &s);
     void inicMemoria(int n);
     void mostrarMemoria();
     void mostrarTabela();
@@ -22,7 +23,8 @@ namespace contigua
     void processo_CircularFit(int tamanho);
     void removerProcessoContigua(int id);
     void realocarMemoria();
-    double calcularFragmentacao();
+    double calcularFragmentacaoExterna();
+    void menuContigua();
 
 }
 
