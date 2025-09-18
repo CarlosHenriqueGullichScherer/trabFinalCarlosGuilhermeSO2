@@ -1,5 +1,5 @@
 #include <algorithm> //sort()
-#include <iomanip>   //setprecicison()
+#include <iomanip>   //setprecicison(), setw()
 #include <iostream>
 #include <map>    //map representa tabela de processos
 #include <string> //trabalhar com entradas em string
@@ -37,11 +37,18 @@ namespace contigua {
             return;
         }
         std::cout << "Memoria (" << memoria.size() << " unidades):\n";
+        int contador=0;
         for (size_t i = 0; i < memoria.size(); i++) {
             if (memoria[i] == -1) {
-                std::cout << "[-]";
+                std::cout << std::setw(5) << "[-]";
             } else {
-                std::cout << "[P" << memoria[i] << "]";
+                std::string bloco = "P" + std::to_string(memoria[i]);
+                std::cout << std::setw(5) << ("[" + bloco + "]");
+            }
+            contador++;
+            if (contador == 20) {
+                std::cout << "\n";
+                contador = 0;
             }
         }
         std::cout << "\n";
