@@ -181,7 +181,11 @@ namespace gerenMemoria {
                 processoLocal = processo; //descobre o processo que o usuário quer ver a fragmentação a partir do id passado
             }
         }
-        fragTotal = (double) processoLocal.fragmentacao / processoLocal.tamanhoTotal * 100; //calcula a fragmentação em relação ao processo
+        int paginas = ceil((double)processoLocal.tamanhoTotal / tpagina);
+        int memoriaAlocada = paginas * tpagina;
+        int desperdicio = memoriaAlocada - processoLocal.tamanhoTotal;
+
+        fragTotal = (double)desperdicio / memoriaAlocada * 100; //calcula a fragmentação em relação ao processo
         fragPagina = (double) processoLocal.fragmentacao / tpagina * 100; // em relação a última página
         return "Relativa ao processo: " + std::to_string(fragTotal) + "% " "\n" + "Relativa a última pag " + std::to_string(fragPagina) + "%";
        
@@ -293,7 +297,7 @@ namespace gerenMemoria {
                     sair = true; // sai do programa
                     break;
                 default:
-                    std::cout << "Opção inválida!" << std::endl; //nunca cai no default, está por padrão
+                    std::cout << "Opção inválida!" << std::endl; 
                     break;
             }
         }
@@ -301,6 +305,7 @@ namespace gerenMemoria {
 }
 
 }
+
 
 
 

@@ -31,3 +31,23 @@ simulador.exe
 
 Foram utilizadas somente bibliotecas nativas da própria linguagem C++.
 algorithm, cctype, cmath, iomanip, iostream, map, string, vector
+
+
+#  Decisões de projeto e arquiteturas adotadas
+A parte de alocação contínua dinâmica ficou com o Guilherme enquanto a parte de paginação ficou com o Carlos. A implementação foi feita da maneira mais simples e didática que conseguimos pensar, usufruindo apenas de estruturas de dados mais simples como vetores e mapas, que já são capazes de implementar todos os conceitos que foram requisitados.
+
+# exemplo de uso simulador paginação, 
+definindo número de frames, tamanhoda página, mostrando memória
+![alt text](image.png)
+Inserindo processo
+![alt text](image-1.png)
+Removendo processo
+![alt text](image-2.png)
+Tabela de páginas
+![alt text](image-3.png)
+Ver memória
+![alt text](image-5.png)
+Fragmentação total
+![alt text](image-4.png)
+Fragmentação específica
+![alt text](image-6.png)
